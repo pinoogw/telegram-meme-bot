@@ -7,3 +7,4 @@ accettato.txt=file for say thanks who send a imagine
 copia.py=bot without instagram integration
 main.py=full integration with instagram
 post.py=small file non telegram bot just to post photo
+tag.txt=save tag
