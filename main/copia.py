@@ -31,9 +31,9 @@ def start(chat,message):
             log_in=log.write("\n"+str(message.sender.id))
             log.close()
             chat.send("loggato con successo")
-@bot.message_contains("pubblicità")
+@bot.message_contains("pubblicità") #spam add
 def pubblicita(chat,message):
-    if message.sender.id == 502877509:
+    if message.sender.id == your telegram_id:
         ida=1
         num_lines = sum(1 for line in open('log-in.txt'))
         while num_lines>ida:
