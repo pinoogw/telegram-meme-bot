@@ -1,1 +1,9 @@
-q
+ban.txt=text file where save id for ban people
+arrivo.txt=for have the number of file, for add new description on private channel and for more easy to send random immages
+database.txt=a place where is save all md5 for accept meme
+log-in.txt=file where is save all id of user
+notifiche.txt=file where save all user who want recive every hour a meme
+accettato.txt=file for say thanks who send a imagine
+copia.py=bot without instagram integration
+main.py=full integration with instagram
+post.py=small file non telegram bot just to post photo
