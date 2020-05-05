@@ -9,6 +9,7 @@ import sys
 from instabot import Bot
 import requests
 import datetime
+import matplotlib.pyplot as plt
 bot = botogram.create("your token")
 def loadList(file, type):
     if type == "int":
@@ -907,7 +908,175 @@ def mandamessaggio(chat,message,args,bot):
         chat.send("non mandato")
         bot.chat(-100).send("user " + str(message.sender.id) +  " errore "+ str(e))
 
+@bot.command("AggiungiChannelLog")
+def AggiungiChannelLog(chat,message,args):
+    admins=["]
+    if str(message.sender.id) in admins:
+        ar=" ".join(args)
+        l=open("Channel-log.txt","a")
+        try:
+            l.write("\n"+str(ar))
+        except Exception as e: 
+            chat.send("non aggiornato")
+            bot.chat(-10014).send("user " + str(message.sender.id) +  " errore "+ str(e))
+        l.close()
 
+@bot.command("RiscriviChannelLog")
+def RiscriviChannelLog(chat,message,args):
+    admins=["502877509","457951837","254522589"]
+    if str(message.sender.id) in admins:
+        ar=" ".join(args)
+        l=open("Channel-log.txt","w")
+        try:
+            l.write("\n"+str(ar))
+            chat.send("aggiornato")
+        except Exception as e: 
+            chat.send("non aggiornato")
+            bot.chat(-1001485900015).send("user " + str(message.sender.id) +  " errore "+ str(e))
+        l.close()
+
+@bot.command("sondaggio")
+def sondaggioo(chat,message,args,bot):
+    admins=[""]
+    if str(message.sender.id) in admins:
+        ar=" ".join(args)
+    btns=botogram.Buttons()
+    btns[0].callback("sì","sondaggiosi")
+    btns[1].callback("no","sondaggioNo")
+    ida=0
+    num_lines = sum(1 for line in open('log-in.txt'))
+    inviati_a=" "
+    while num_lines>ida:
+            open_file=open('log-in.txt','r')
+            file_lines=open_file.readlines()
+            file = file_lines[ida].strip()  # First Line
+            if file is None:
+                pass
+            if int(file)<0:
+                pass
+            else:
+                try:
+                    bot.chat(file).send(ar,attach=btns)
+                    x=open("sondaggioid.txt","w")
+                    x.write(str(message.id))
+                    x.close()
+                    inviati_a=inviati_a + " " + file
+                except botogram.ChatUnavailableError as e:
+                    bot.chat(-1000).send("Can't send messages to %s (reason: %s)" %
+                    (e.chat_id, e.reason))
+            ida=ida+1
+    bot.chat(-100).send("il sondaggio è stato inviato a " +str(inviati_a) + 
+    "\nil testo è " + str(ar)+ "\ndall admin @"+ str(message.sender.username))
+
+@bot.callback("sondaggiosi")
+def sondaggiosi(query,chat,message):
+    votiattuali=open("sondaggiosì.txt","r")
+    voti=votiattuali.readline()
+    votiattuali.close()
+    voti=int(voti)
+    voti+=1
+    votiattuali=open("sondaggiosì.txt","w")
+    votiattuali.write(str(voti))
+    votiattuali.close()
+    salvaid=open("sondaggioid.txt","a")
+    salvaid.write(str(chat.id)+"\n")
+    salvaid.close()
+    bot.chat(-10).send("@"+chat.username+"\n"+str(chat.id)+"ha votato si")
+    message.delete()
+
+
+@bot.callback("sondaggioNo")
+def sondaggioNo(query,chat,message):
+    votiattuali=open("sondaggiono.txt","r")
+    voti=votiattuali.readline()
+    votiattuali.close()
+    voti=int(voti)
+    voti+=1
+    votiattuali=open("sondaggiono.txt","w")
+    votiattuali.write(str(voti))
+    votiattuali.close()
+    salvaid=open("sondaggioid.txt","a")
+    salvaid.write(str(chat.id)+"\n")
+    salvaid.close()
+    bot.chat(-100).send("@"+chat.username+"\n"+str(chat.id)+"ha votato no")
+    message.delete()
+
+@bot.command("vedisondaggio")
+def sondaggio(chat,message,args):
+    votiattuali=open("sondaggiosì.txt","r")
+    voti=votiattuali.readline()
+    votiattuali.close()
+    voti=int(voti)
+    votiattuali=open("sondaggiono.txt","r")
+    votino=votiattuali.readline()
+    votiattuali.close()
+    votino=int(votino)
+    votitotali=voti+votino
+    names = ['si', 'no']
+    values = [voti,votino]
+    plt.figure(figsize=(9, 3))
+    plt.subplot(131)
+    plt.bar(names, values)
+    plt.savefig("risultato.png")
+    chat.send_photo("risultato.png",caption="i voti totali sono= "+ str(votitotali) + " hanno votato si " 
+    + str(voti) + " hanno votato no = " + str(votino))
+@bot.command("stopvoti")
+def stopvoti(chat,message,bot):
+    admins=[""]
+    if str(message.sender.id) in admins:
+        votiattuali=open("sondaggiosì.txt","r")
+        voti=votiattuali.readline()
+        votiattuali.close()
+        voti=int(voti)
+        votiattuali=open("sondaggiono.txt","r")
+        votino=votiattuali.readline()
+        votiattuali.close()
+        votino=int(votino)
+        votitotali=voti+votino
+        bot.chat(-100).send("i voti totali sono= "+ str(votitotali) + " hanno votato si " 
+        + str(voti) + " hanno votato no = " + str(votino))
+        x=open("sondaggioid.txt","r")
+        f=x.readline()
+        x.close()
+        f=int(f)
+        ida=0
+        num_lines = sum(1 for line in open('log-in.txt'))
+        f=f+1
+        while num_lines>ida:
+                open_file=open('log-in.txt','r')
+                file_lines=open_file.readlines()
+                file = file_lines[ida].strip()  # First Line
+                if file is None:
+                    pass
+                if int(file)<0:
+                    pass
+                else:
+                    try:
+                        bot.chat(file).send("stop ai voti")
+                        try:
+                            bot.chat(file).delete_message(f)
+                            bot.chat(-100).send("non ha risposto al sondaggio"+str(file))
+                        except:
+                            pass
+                        f=f+1
+                    except botogram.ChatUnavailableError as e:
+                        bot.chat(-100).send("Can't send messages to %s (reason: %s)" %
+                        (e.chat_id, e.reason))
+                        f=f+1
+                ida=ida+1
+        names = ['si', 'no']
+        values = [voti,votino]
+        plt.figure(figsize=(9, 3))
+        plt.subplot(131)
+        plt.bar(names, values)
+        plt.savefig("risultato.png")
+        bot.chat(-100).send_photo("risultato.png")
+        votiattuali=open("sondaggiono.txt","w")
+        votiattuali.write("0")
+        votiattuali.close()
+        votiattuali=open("sondaggiosì.txt","w")
+        votiattuali.write("0")
+        votiattuali.close()
 @bot.command("sintassi")
 def sintassi(chat,message,args,bot):
     chat.send("""/mandamessaggio + id 
@@ -924,6 +1093,7 @@ def sintassi(chat,message,args,bot):
     /newgroup 
     /stats 
     /suggerimento""")
+
 
 if __name__ == "__main__":
     bot.run()
