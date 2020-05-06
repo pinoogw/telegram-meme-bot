@@ -870,36 +870,24 @@ def listaUtenti(chat,message,args):
         chat.send(str1,reply_to=message.id,extra=botogram.ForceReply(data={'force_reply':True}))
 
 
-@bot.command("nuovomessaggio")
-def nuovomessaggio(chat,message,args):
-    ar=" ".join(args)
-    x=open("messaggio.txt","w")
-    x.write(ar)
-    x.close()
-    try:
-        chat.send("salvato " + ar)
-    except:
-        bot.chat(-100).send("l'utente " + str(message.sender.id) + " ha generato un errore per nuovomessaggio")
-        chat.send("errore")
-
-
 
 
 @bot.command("mandamessaggio")
 def mandamessaggio(chat,message,args,bot):
-    ar=str(args).strip("['']")
+    iduser=args[0]
+    args.pop(0)
+    ar=" ".join(args)
     x=open("messaggio.txt","r")
     f=x.readline()
     x.close()
     try:
-        ar=int(ar)
+        ar=int(iduser)
     except Exception as e: 
         chat.send("no id ")
         bot.chat(-100).send("user " + str(message.sender.id) +  " errore: \n "+ str(e))
         return
-
     try:
-        bot.chat(ar).send(f)
+        bot.chat(iduser).send(ar)
         chat.send("mandato")
     except botogram.ChatUnavailableError as e:
                 bot.chat(-100).send("Can't send messages to %s (reason: %s)" %
