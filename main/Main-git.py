@@ -898,7 +898,7 @@ def mandamessaggio(chat,message,args,bot):
 
 @bot.command("AggiungiChannelLog")
 def AggiungiChannelLog(chat,message,args):
-    admins=["]
+    admins=[""]
     if str(message.sender.id) in admins:
         ar=" ".join(args)
         l=open("Channel-log.txt","a")
@@ -911,7 +911,7 @@ def AggiungiChannelLog(chat,message,args):
 
 @bot.command("RiscriviChannelLog")
 def RiscriviChannelLog(chat,message,args):
-    admins=["502877509","457951837","254522589"]
+    admins=[""]
     if str(message.sender.id) in admins:
         ar=" ".join(args)
         l=open("Channel-log.txt","w")
@@ -920,7 +920,7 @@ def RiscriviChannelLog(chat,message,args):
             chat.send("aggiornato")
         except Exception as e: 
             chat.send("non aggiornato")
-            bot.chat(-1001485900015).send("user " + str(message.sender.id) +  " errore "+ str(e))
+            bot.chat(-10014859005).send("user " + str(message.sender.id) +  " errore "+ str(e))
         l.close()
 
 @bot.command("sondaggio")
