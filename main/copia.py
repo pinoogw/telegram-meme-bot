@@ -11,7 +11,7 @@ bot = botogram.create("your api token")
 
 @bot.message_contains("#suggerimento")#command for user who want a new features on bot
 def suggest(chat,bot,message):
-    bot.chat(your channel).send("@"+message.sender.username + " send new  feature " + str(message.text))
+    bot.chat("your channel").send("@"+message.sender.username + " send new  feature " + str(message.text))
 
 @bot.command("info")
 def info(chat,message):
