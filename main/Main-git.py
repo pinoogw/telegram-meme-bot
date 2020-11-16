@@ -353,6 +353,7 @@ def Logga(chat, message):
 
 @bot.command("suggerimento") #to suggest new function
 def suggest(chat,bot,message,args):
+    ar=" ".join(args)
     with open('ban.txt') as file:
         f = file.read()
         if f is None:
@@ -360,7 +361,7 @@ def suggest(chat,bot,message,args):
         if str(message.sender.id) in f: #if user is ban in bot and bot is admin ban user
             chat.send("sei stato bannato")
         else:
-            bot.chat(-100).send("@"+message.sender.username + " ha inviato questa nuova feature " + str(args).strip("['']"))
+            bot.chat(-100).send("@"+message.sender.username + " ha inviato questa nuova feature " + str(ar))
 
 @bot.command("stats") #see bot stats 
 def stats(chat,message):
@@ -591,6 +592,7 @@ def start(chat,message):
 
 @bot.command("ad")#danger if you use this you lose your old tags
 def add(chat,message,args,bot):#spam ad 
+    ar=" ".join(args)
     if message.sender.id == 50:
         ida=0
         num_lines = sum(1 for line in open('log-in.txt'))
@@ -602,7 +604,7 @@ def add(chat,message,args,bot):#spam ad
                 pass
             else:
                 try:
-                    bot.chat(file).send(str(args).strip("['']"))
+                    bot.chat(file).send(str(ar))
                 except botogram.ChatUnavailableError as e:
                     bot.chat(-1001).send("Can't send messages to %s (reason: %s)" %
                     (e.chat_id, e.reason))
